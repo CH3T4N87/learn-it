@@ -1,0 +1,14 @@
+.CoursesPage {
+
+  .coursesNav {
+    display: flex;
+    justify-content: end;
+  }
+
+  .coursesContainer {
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}

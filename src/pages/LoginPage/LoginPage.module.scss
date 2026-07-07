@@ -1,0 +1,10 @@
+@use "../../styles/formCommon" as *;
+@use "../../styles/mixins" as *;
+
+.LoginPage{
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.75)), url(../../assets/landingPage_BG.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    @include flex(center, center);
+}

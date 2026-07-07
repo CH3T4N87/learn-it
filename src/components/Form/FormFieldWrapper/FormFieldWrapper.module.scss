@@ -1,0 +1,10 @@
+.formField{
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    .errMsg{
+        font-size: 0.75em;
+        color: red;
+    }
+}

@@ -1,0 +1,1 @@
+export type ModalState = { type: "ADD_COURSE" } | null

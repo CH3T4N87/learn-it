@@ -1,0 +1,22 @@
+.StudentsPage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  .studentPreview {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.99), rgba(255, 255, 255, 0.1)), url(../../../assets/student_BG.svg);
+    background-position: center;
+    min-width: calc(20% - 6.4px);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background-color: beige;
+    border: 8px;
+    gap: 0.75rem;
+    border: thin solid;
+    font-weight: 500;
+  }
+
+ 
+
+}

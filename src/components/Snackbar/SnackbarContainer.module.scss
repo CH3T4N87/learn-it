@@ -1,0 +1,26 @@
+@use "../../styles/variables" as *;
+
+.SnackbarContainer{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    span{
+        padding: 0.25rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        box-shadow: 0 0 8px 2px #969696; 
+    }
+
+    .success{
+        background-color: $dark-success;
+    }
+
+    .error{
+        background-color: $dark-danger;
+    }
+}

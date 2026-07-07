@@ -1,0 +1,17 @@
+.modalBackdrop{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: #cccccc6d;
+    display: grid;
+    place-items: center;
+
+    .modal{
+        padding: 0.25rem;
+        background-color: white;
+        box-shadow: 0 0 8px 2px #ccc;
+        border-radius: 4px;
+    }
+}

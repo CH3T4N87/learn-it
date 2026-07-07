@@ -1,0 +1,44 @@
+.LandingPage {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    .heroSection {
+        padding: 2.5rem;
+        flex-grow: 1;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.99), rgba(255, 255, 255, 0.75)), url(../../assets/landingPage_BG.svg);
+        background-position: center;
+
+        display: flex;
+        gap: 2.75rem;
+
+        .section {
+            width: 50%;
+            padding: 1rem;
+        }
+        .leftSection{
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+        .rightSection{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            span{
+                font-size: 2.5em;
+                margin-bottom: 1.25rem;
+            }
+
+            .highlight {
+                color: rgb(86, 86, 236);
+                font-weight: 500;
+            }
+        }
+
+
+    }
+}

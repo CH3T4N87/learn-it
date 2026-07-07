@@ -1,0 +1,25 @@
+@use "../../styles/variables" as *;
+
+.btn{
+    border: none;    
+    padding: 0.25rem 1.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.primary{
+    color: $dark-text-main;
+    background-color: $dark-primary;
+}
+.secondary{
+    color: $dark-text-muted;
+    background-color: $dark-bg;
+}
+.success{
+    color: $dark-text-main;
+    background-color: $dark-success;
+}
+.danger{
+    color: $dark-text-main;
+    background-color: $dark-danger;
+}

@@ -1,0 +1,26 @@
+.courseCard {
+  border: thin solid;
+  border-radius: 4px;
+  background-position: center;
+  width: 15rem;
+  padding: 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 0 8px 2px #ccc;
+
+  .courseTitle {
+    font-size: 1.5em;
+  }
+
+  .courseDesc {
+    font-size: 0.85em;
+  }
+
+  .courseTutor {
+    font-weight: 500;
+  }
+  .enrollBtn{
+    margin-top: 0.75rem;
+  }
+}
