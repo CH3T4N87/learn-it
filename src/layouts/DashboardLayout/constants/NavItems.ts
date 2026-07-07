@@ -6,7 +6,8 @@ export const NAV_ITEMS_BY_ROLE = {
   ],
   STUDENT: [
     { label: "Courses", to: "courses" },
-    { label: "My Courses", to: "me/courses" }
+    { label: "My Courses", to: "me/courses" },
+    { label: "Grades", to: "me/grades" }
   ],
   INSTRUCTOR: [
     { label: "Courses", to: "courses" },

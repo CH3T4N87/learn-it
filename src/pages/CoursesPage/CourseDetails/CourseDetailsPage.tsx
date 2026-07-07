@@ -11,6 +11,7 @@ import { ROLES } from "../../../types/Roles";
 import AddAssignment from "./components/AddAssignment/AddAssignment";
 import AssignementsPage from "./components/AssignmentsPage/AssignmentsPage";
 import AddAssignmentFile from "./components/AddAssignmentFile/AddAssignementFile";
+import Submissions from "./components/Submissions/Submissions";
 
 const CourseDetailPage = () => {
   const [modal, setModal] = useState<ModalState>(null);
@@ -25,10 +26,13 @@ const CourseDetailPage = () => {
 
   return (
     <div>
+
       {modal?.type === "ADD_ANNOUNCEMENT" && <AddAnnouncement onClose={closeModal} courseId={id!} />}
       {modal?.type === "ADD_ASSIGNMENT" && <AddAssignment onClose={closeModal} courseId={id!} />}
       {modal?.type === "VIEW_ASSIGNMENT" && <AssignementsPage onClose={closeModal} courseId={id!} />}
       {modal?.type === "ADD_ASSIGNMENT_FILE" && <AddAssignmentFile onClose={closeModal} assignmentId={modal.assignmentId} />}
+      {modal?.type === "VIEW_SUBMISSIONS" && <Submissions onClose={closeModal} assignmentId={modal.assignmentId} />}
+
       <h1>{course.title}</h1>
 
       <p>{course.description}</p>
@@ -85,9 +89,14 @@ const CourseDetailPage = () => {
               Due Date:
               {" " + new Date(assignment.dueAt).toLocaleDateString()}
             </p>
-            <RoleGuard allowed={[ROLES.INSTRUCTOR]}><Button variant="success"
+            <RoleGuard allowed={[ROLES.INSTRUCTOR]}>
+              <Button variant="success"
               onClick={() => setModal({ type: "ADD_ASSIGNMENT_FILE", assignmentId: assignment.id })}
-            >Add Assignment File</Button></RoleGuard>
+            >Add Assignment File</Button>
+              <Button variant="secondary"
+              onClick={() => setModal({ type: "VIEW_SUBMISSIONS", assignmentId: assignment.id })}
+            >View Submission Files</Button>
+            </RoleGuard>
           </div>
         ))
       ) : (

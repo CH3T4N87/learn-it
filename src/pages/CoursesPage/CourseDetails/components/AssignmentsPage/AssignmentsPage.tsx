@@ -1,6 +1,6 @@
 import Modal from "../../../../../components/Modal/Modal";
 import Loader from "../../../../../components/Loader/Loader";
-import { useGetAssignmentsQuery } from "../../../../../redux/slices/assignementApiSlice";
+import { useGetAssignmentsQuery } from "../../../../../redux/slices/assignmentApiSlice";
 import type { AssignmentsPageModalState, AssignmentsPageProps } from "./AssignmentsPage.types";
 import Button from "../../../../../components/Button/Button";
 import { useState } from "react";

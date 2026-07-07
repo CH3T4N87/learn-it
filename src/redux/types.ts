@@ -85,3 +85,64 @@ export type UploadAssignmentFileResponse =
     "uploadUrl": string,
     "method": string
 }
+
+
+export type SubmissionFile = {
+    id: string;
+    submissionId: string;
+    uploaderId: string;
+    kind: "SUBMISSION";
+    key: string;
+    filename: string;
+    contentType: string;
+    size: number;
+    status: "PENDING" | "CONFIRMED";
+    createdAt: string;
+};
+
+
+export type Submission = {
+    id: string;
+    assignmentId: string;
+    studentId: string;
+    status: "SUBMITTED" | "GRADED";
+    grade: number | null;
+    feedback: string | null;
+    createdAt: string;
+    student: Pick<User, "id" | "name" | "email">;
+    files: SubmissionFile[];
+};
+
+
+export type GetSubmissionsResponse = Submission[];
+
+
+export type GradeAssignment = {
+    id: string;
+    courseId: string;
+    title: string;
+    description: string;
+    dueAt: string;
+    createdAt: string;
+
+    course: {
+        id: string;
+        title: string;
+    };
+};
+
+
+export type GradeResponse = {
+    id: string;
+    assignmentId: string;
+    studentId: string;
+    status: "GRADED" | "SUBMITTED";
+    grade: number | null;
+    feedback: string | null;
+    createdAt: string;
+
+    assignment: GradeAssignment;
+};
+
+
+export type GetMyGradesResponse = GradeResponse[];

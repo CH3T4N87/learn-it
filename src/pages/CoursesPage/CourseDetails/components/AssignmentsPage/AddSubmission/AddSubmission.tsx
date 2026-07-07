@@ -3,7 +3,7 @@ import Modal from "../../../../../../components/Modal/Modal";
 import Form from "../../../../../../components/Form/Form";
 import FormInput from "../../../../../../components/Form/FormInput/FormInput";
 import Button from "../../../../../../components/Button/Button";
-import { useCreateSubmissionMutation } from "../../../../../../redux/slices/assignementApiSlice";
+import { useCreateSubmissionMutation } from "../../../../../../redux/slices/assignmentApiSlice";
 import type { AddSubmissionProps, SubmissionData } from "./AddSubmission.types";
 import { snack } from "../../../../../../components/Snackbar/hooks/useSnackbarStore";
 

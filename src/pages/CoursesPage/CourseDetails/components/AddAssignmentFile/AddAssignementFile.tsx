@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import type { AddAssignmentFileProps, AssignmentContent } from "./AddAssignmentFile.types";
-import { useUploadAssignmentFileMutation } from "../../../../../redux/slices/assignementApiSlice";
+import { useUploadAssignmentFileMutation } from "../../../../../redux/slices/assignmentApiSlice";
 import { snack } from "../../../../../components/Snackbar/hooks/useSnackbarStore";
 import Modal from "../../../../../components/Modal/Modal";
 import Form from "../../../../../components/Form/Form";

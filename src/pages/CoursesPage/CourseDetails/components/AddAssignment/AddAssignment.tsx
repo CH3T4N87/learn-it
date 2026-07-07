@@ -4,7 +4,7 @@ import Form from "../../../../../components/Form/Form";
 import FormInput from "../../../../../components/Form/FormInput/FormInput";
 import Button from "../../../../../components/Button/Button";
 import type { AddAssignmentProps, AssignmentData } from "./AddAssignment.types";
-import { useAddAssignmentMutation } from "../../../../../redux/slices/assignementApiSlice";
+import { useAddAssignmentMutation } from "../../../../../redux/slices/assignmentApiSlice";
 import { snack } from "../../../../../components/Snackbar/hooks/useSnackbarStore";
 
 const AddAssignment = ({ onClose, courseId }: AddAssignmentProps) => {

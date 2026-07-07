@@ -5,6 +5,7 @@ import { ROLES } from "../types/Roles";
 import { lazy } from "react";
 import StudentsPage from "../pages/AdminPages/StudentsPage/StudentsPage";
 import CourseDetailPage from "../pages/CoursesPage/CourseDetails/CourseDetailsPage";
+import GradesPage from "../pages/StudentPages/EnrolledCourses/GradesPage/GradesPage";
 const LandingPage = lazy(() => import("../pages/LandingPage/LandingPage"))
 const RegistrationPage = lazy(() => import("../pages/RegistrationPage/RegistrationPage"))
 const LoginPage = lazy(() => import("../pages/LoginPage/LoginPage"))
@@ -58,6 +59,10 @@ export const router = createBrowserRouter([
                     {
                         path: "me/courses",
                         element: <RoleGuard isRouterGuard allowed={[ROLES.STUDENT, ROLES.INSTRUCTOR]}><EnrolledCourses /></RoleGuard>
+                    },
+                    {
+                        path: "me/grades",
+                        element: <RoleGuard isRouterGuard allowed={[ROLES.STUDENT]}><GradesPage /></RoleGuard>
                     },
                     {
                         path: "courses/:id",
