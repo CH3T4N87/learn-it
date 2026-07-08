@@ -6,6 +6,8 @@ import Modal from "../../../../../components/Modal/Modal";
 import Form from "../../../../../components/Form/Form";
 import FormInput from "../../../../../components/Form/FormInput/FormInput";
 import Button from "../../../../../components/Button/Button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ZAddAssignmentFile } from "./AddAssignmentFile.schema";
 
 
 const AddAssignmentFile = ({ assignmentId, onClose }: AddAssignmentFileProps) => {
@@ -15,6 +17,7 @@ const AddAssignmentFile = ({ assignmentId, onClose }: AddAssignmentFileProps) =>
       contentType: "",
       size: 1,
     },
+    resolver: zodResolver(ZAddAssignmentFile)
   });
 
   const [uploadAssignmentFile, { isLoading }] = useUploadAssignmentFileMutation();

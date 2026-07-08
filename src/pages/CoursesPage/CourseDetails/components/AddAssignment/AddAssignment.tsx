@@ -6,6 +6,8 @@ import Button from "../../../../../components/Button/Button";
 import type { AddAssignmentProps, AssignmentData } from "./AddAssignment.types";
 import { useAddAssignmentMutation } from "../../../../../redux/slices/assignmentApiSlice";
 import { snack } from "../../../../../components/Snackbar/hooks/useSnackbarStore";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ZAddAssignmentData } from "./AddAssignment.schema";
 
 const AddAssignment = ({ onClose, courseId }: AddAssignmentProps) => {
 
@@ -17,7 +19,7 @@ const AddAssignment = ({ onClose, courseId }: AddAssignmentProps) => {
 
     const [addAssignment, { isLoading }] = useAddAssignmentMutation();
 
-    const methods = useForm<AssignmentData>({ defaultValues });
+    const methods = useForm<AssignmentData>({ defaultValues, resolver: zodResolver(ZAddAssignmentData) });
 
 
     const onSubmit = async (data: AssignmentData) => {

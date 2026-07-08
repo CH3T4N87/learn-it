@@ -5,10 +5,12 @@ import Form from "../../../../../components/Form/Form";
 import FormInput from "../../../../../components/Form/FormInput/FormInput";
 import Button from "../../../../../components/Button/Button";
 import { useAddAnnouncementMutation } from "../../../../../redux/slices/coursesApiSlice";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ZAnnouncementData } from "./AddAnnouncement.schema";
 
 const AddAnnouncement = ({onClose, courseId}: AddAnnouncementProps) => {
 
-    const methods = useForm<AnnouncementData>({defaultValues: { body: "" }});
+    const methods = useForm<AnnouncementData>({defaultValues: { body: "" }, resolver: zodResolver(ZAnnouncementData)});
 
      const [addAnnouncement, { isLoading }] = useAddAnnouncementMutation();
 

@@ -1,11 +1,11 @@
+import type z from "zod"
+import type { ZAddAssignmentFile } from "./AddAssignmentFile.schema"
+
 export interface AddAssignmentFileProps {
     onClose: () => void,
     assignmentId: string
 }
 
-export interface AssignmentContent {
-    filename: string,
-    contentType: string,
-    size: number
-}
 
+
+export type AssignmentContent = z.input<typeof ZAddAssignmentFile>

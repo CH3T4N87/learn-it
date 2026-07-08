@@ -20,7 +20,7 @@ export type GetInstructorsResponse = Pick<User, "id" | "name" | "email">[]
 
 export type GetMyCoursesResponse = {
     id: string,
-    course: CourseData & {id: string, instructor: Partial<User> }
+    course: CourseData & { id: string, instructor: Partial<User> }
 }[]
 
 export type EnrollCourseResponse = {
@@ -63,14 +63,14 @@ export type GetCourseByIdResponse = CourseData & {
 }
 
 
-export type Assignment =   {
-        "id": string,
-        "courseId": string,
-        "title": string,
-        "description": string,
-        "dueAt": string,
-        "createdAt": string
-    }
+export type Assignment = {
+    "id": string,
+    "courseId": string,
+    "title": string,
+    "description": string,
+    "dueAt": string,
+    "createdAt": string
+}
 
 export type AddAnnouncementResponse = {
     "id": string,
@@ -79,12 +79,12 @@ export type AddAnnouncementResponse = {
     "createdAt": string
 }
 
-export type UploadAssignmentFileResponse = 
+export type UploadAssignmentFileResponse =
     {
-    "fileId": string,
-    "uploadUrl": string,
-    "method": string
-}
+        "fileId": string,
+        "uploadUrl": string,
+        "method": string
+    }
 
 
 export type SubmissionFile = {
@@ -146,3 +146,18 @@ export type GradeResponse = {
 
 
 export type GetMyGradesResponse = GradeResponse[];
+
+
+
+export type SessionQuestion = {
+    id: string;
+    sessionId: string;
+    studentId: string;
+    body: string;
+    answered: boolean;
+    createdAt: string;
+
+    student: Pick<User, "id" | "name">;
+};
+
+export type GetSessionQuestionsResponse = SessionQuestion[];
