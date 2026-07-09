@@ -1,0 +1,26 @@
+@mixin tanana {
+    border-bottom: thin solid #ccc;
+    padding: 1rem;
+}
+
+.announcements,
+.sessions,
+.assignments,
+.courseHeader {
+    @include tanana;
+}
+
+.courseHeader {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.99), rgba(255, 255, 255, 0.99)), url(../../../assets/reg_BG.svg);
+}
+
+.announcements {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.99)), url(../../../assets/student_BG.svg);
+}
+
+.sessions {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.90), rgba(255, 255, 255, 0.99)), url(../../../assets/leftSection_BG.svg);
+}

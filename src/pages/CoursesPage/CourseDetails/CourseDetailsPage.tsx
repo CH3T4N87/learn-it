@@ -16,6 +16,7 @@ import { useEndSessionMutation, useStartSessionMutation } from "../../../redux/s
 import { snack } from "../../../components/Snackbar/hooks/useSnackbarStore";
 import AddQuestion from "./components/AddQuestion/AddQuestion";
 import QuestionsPage from "./components/QuestionsPage/QuestionsPage";
+import styles from "./CourseDetailsPage.module.scss";
 
 
 
@@ -91,122 +92,124 @@ const CourseDetailPage = () => {
       {modal?.type === "ADD_QUESTION" && <AddQuestion onClose={closeModal} sessionId={modal.sessionId} />}
       {modal?.type === "VIEW_QUESTIONS" && <QuestionsPage onClose={closeModal} sessionId={modal.sessionId} />}
 
-      <h1>{course.title}</h1>
-
-      <p>{course.description}</p>
-
-      <h3>Instructor</h3>
-      <p>{course.instructor?.name}</p>
-
-      <p>Capacity: {course.capacity}</p>
-
+      <div className={styles.courseHeader}>
+        <h1><i className="fa-solid fa-book"></i>    {course.title}</h1>
+        <p><i className="fa-solid fa-align-justify"></i>    {course.description}</p>
+        <h3><i className="fa-solid fa-person-chalkboard"></i>    Instructor</h3>
+        <p>{course.instructor?.name}</p>
+        <p>Capacity: {course.capacity}</p>
+      </div>
 
 
-      <h2>Announcements</h2>
 
-      {course.announcements.length ? (
-        course.announcements.map((announcement) => (
-          <div key={announcement.id}>
-            <p>{announcement.body}</p>
-            <span>
-              {new Date(announcement.createdAt).toLocaleDateString()}
-            </span>
-          </div>
-        ))
-      ) : (
-        <p>No announcements available</p>
-      )}
+      <div className={styles.announcements}>
+        <h2>Announcements</h2>
+        {course.announcements.length ? (
+          course.announcements.map((announcement) => (
+            <div key={announcement.id}>
+              <p>{announcement.body}</p>
+              <span>
+                {new Date(announcement.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+          ))
+        ) : (
+          <p>No announcements available</p>
+        )}
+        <RoleGuard allowed={[ROLES.ADMIN]}><Button onClick={() => setModal({ type: "ADD_ANNOUNCEMENT" })}>Add Announcement</Button></RoleGuard>
+      </div>
 
-      <RoleGuard allowed={[ROLES.ADMIN]}><Button onClick={() => setModal({ type: "ADD_ANNOUNCEMENT" })}>Add Announcement</Button></RoleGuard>
 
-      <h2>Sessions</h2>
+      <div className={styles.sessions}>
+        <h2>Sessions</h2>
+        {course.sessions.length ? (
+          course.sessions.map((session) => (
+            <div key={session.id}>
+              <p>
+                {new Date(session.startsAt).toLocaleString()}{" " + session.id}
+              </p>
+              <p>Status: {session.status}</p>
+              <RoleGuard allowed={[ROLES.INSTRUCTOR]}>
+                <Button
+                  variant="success"
+                  onClick={() => handleStart(session.id)}
+                  disabled={sessionLoading.startingSessionId === session.id}
+                >
+                  {sessionLoading.startingSessionId === session.id
+                    ? "Going Live..."
+                    : "Go Live"}
+                </Button>
 
-      {course.sessions.length ? (
-        course.sessions.map((session) => (
-          <div key={session.id}>
-            <p>
-              {new Date(session.startsAt).toLocaleString()}{" " + session.id}
-            </p>
-            <p>Status: {session.status}</p>
-            <RoleGuard allowed={[ROLES.INSTRUCTOR]}>
+                <Button
+                  variant="danger"
+                  onClick={() => handleEnd(session.id)}
+                  disabled={sessionLoading.endingSessionId === session.id}
+                >
+                  {sessionLoading.endingSessionId === session.id
+                    ? "Ending..."
+                    : "End Live Stream"}
+                </Button>
+
+              </RoleGuard>
+
+
               <Button
-                variant="success"
-                onClick={() => handleStart(session.id)}
-                disabled={sessionLoading.startingSessionId === session.id}
+                variant="primary"
+                onClick={() => setModal({ type: "VIEW_QUESTIONS", sessionId: session.id })}
               >
-                {sessionLoading.startingSessionId === session.id
-                  ? "Going Live..."
-                  : "Go Live"}
+                View Questions
               </Button>
 
-              <Button
-                variant="danger"
-                onClick={() => handleEnd(session.id)}
-                disabled={sessionLoading.endingSessionId === session.id}
-              >
-                {sessionLoading.endingSessionId === session.id
-                  ? "Ending..."
-                  : "End Live Stream"}
-              </Button>
 
-            </RoleGuard>
-
-
-            <Button
-              variant="primary"
-              onClick={() => setModal({ type: "VIEW_QUESTIONS", sessionId: session.id })}
-            >
-              View Questions
-            </Button>
-
-
-            <RoleGuard allowed={[ROLES.STUDENT]}>
-              <Button variant="success" onClick={() => setModal({ type: "ADD_QUESTION", sessionId: session.id })}>Ask Questions</Button>
-            </RoleGuard>
-          </div>
-        ))
-      ) : (
-        <p>No sessions scheduled</p>
-      )}
-      <RoleGuard allowed={[ROLES.INSTRUCTOR]}>
-        <Button onClick={() => setModal({ type: "ADD_SESSION", courseId: course.id })}>Schedule a session</Button>
-      </RoleGuard>
+              <RoleGuard allowed={[ROLES.STUDENT]}>
+                <Button variant="success" onClick={() => setModal({ type: "ADD_QUESTION", sessionId: session.id })}>Ask Questions</Button>
+              </RoleGuard>
+            </div>
+          ))
+        ) : (
+          <p>No sessions scheduled</p>
+        )}
+        <RoleGuard allowed={[ROLES.INSTRUCTOR]}>
+          <Button onClick={() => setModal({ type: "ADD_SESSION", courseId: course.id })}>Schedule a session</Button>
+        </RoleGuard>
+      </div>
 
 
 
-      <h2>Assignments</h2>
+      <div className={styles.assignments}>
+        <h2>Assignments</h2>
+        {course.assignments.length ? (
+          course.assignments.map((assignment) => (
+            <div key={assignment.id}>
+              <h4>{assignment.title}{assignment.id}</h4>
 
-      {course.assignments.length ? (
-        course.assignments.map((assignment) => (
-          <div key={assignment.id}>
-            <h4>{assignment.title}{assignment.id}</h4>
+              <p>
+                Due Date:
+                {" " + new Date(assignment.dueAt).toLocaleDateString()}
+              </p>
+              <RoleGuard allowed={[ROLES.STUDENT]}>
+                <Button variant="success"
+                  onClick={() => setModal({ type: "ADD_ASSIGNMENT_FILE", assignmentId: assignment.id })}
+                >Add Assignment File</Button>
+              </RoleGuard>
+              <RoleGuard allowed={[ROLES.INSTRUCTOR]}>
+                <Button variant="secondary"
+                  onClick={() => setModal({ type: "VIEW_SUBMISSIONS", assignmentId: assignment.id })}
+                >View Submission Files</Button>
+              </RoleGuard>
+            </div>
+          ))
+        ) : (
+          <p>No assignments available</p>
+        )}
 
-            <p>
-              Due Date:
-              {" " + new Date(assignment.dueAt).toLocaleDateString()}
-            </p>
-            <RoleGuard allowed={[ROLES.STUDENT]}>
-              <Button variant="success"
-                onClick={() => setModal({ type: "ADD_ASSIGNMENT_FILE", assignmentId: assignment.id })}
-              >Add Assignment File</Button>
-            </RoleGuard>
-            <RoleGuard allowed={[ROLES.INSTRUCTOR]}>
-              <Button variant="secondary"
-                onClick={() => setModal({ type: "VIEW_SUBMISSIONS", assignmentId: assignment.id })}
-              >View Submission Files</Button>
-            </RoleGuard>
-          </div>
-        ))
-      ) : (
-        <p>No assignments available</p>
-      )}
-
-      <RoleGuard allowed={[ROLES.INSTRUCTOR]}><Button
-        onClick={() => setModal({ type: "ADD_ASSIGNMENT" })}
-      >Add New Assignment</Button></RoleGuard>
-      <RoleGuard allowed={[ROLES.STUDENT]}><Button
-        onClick={() => setModal({ type: "VIEW_ASSIGNMENT" })}
-      >View Assignments</Button></RoleGuard>
+        <RoleGuard allowed={[ROLES.INSTRUCTOR]}><Button
+          onClick={() => setModal({ type: "ADD_ASSIGNMENT" })}
+        >Add New Assignment</Button></RoleGuard>
+        <RoleGuard allowed={[ROLES.STUDENT]}><Button
+          onClick={() => setModal({ type: "VIEW_ASSIGNMENT" })}
+        >View Assignments</Button></RoleGuard>
+      </div>
     </div>
   );
 };
