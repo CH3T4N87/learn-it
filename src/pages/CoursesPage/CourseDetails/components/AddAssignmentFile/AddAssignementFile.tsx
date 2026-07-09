@@ -5,12 +5,11 @@ import { snack } from "../../../../../components/Snackbar/hooks/useSnackbarStore
 import Modal from "../../../../../components/Modal/Modal";
 import Form from "../../../../../components/Form/Form";
 import Button from "../../../../../components/Button/Button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ZAddAssignmentFile } from "./AddAssignmentFile.schema";
 import FormFileInput from "../../../../../components/Form/FormFileInput/FormFileInput";
 
 
 const AddAssignmentFile = ({ assignmentId, onClose }: AddAssignmentFileProps) => {
+    
     const methods = useForm<AssignmentUploadForm>({
         defaultValues: {
             file: undefined
@@ -27,7 +26,7 @@ const AddAssignmentFile = ({ assignmentId, onClose }: AddAssignmentFileProps) =>
         }
         try {
 
-            const { fileId, uploadUrl } = await uploadAssignmentFile(
+            const { fileId } = await uploadAssignmentFile(
                 {
                     assignmentId,
                     data: {
@@ -37,28 +36,20 @@ const AddAssignmentFile = ({ assignmentId, onClose }: AddAssignmentFileProps) =>
                     }
                 }).unwrap();
 
-            console.log(fileId, uploadUrl);
-            
-            const response = await fetch(`https://xhkrpfff-4000.inc1.devtunnels.ms/internal/upload/${fileId}`, {
+            const uploadUrl = `https://xhkrpfff-4000.inc1.devtunnels.ms/internal/upload/${fileId}`;
+            const response = await fetch(uploadUrl, {
                 method: "PUT",
-                body: data.file,
                 headers: {
-                    "Content-Type": data.file.type,
+                    "Content-Type": "application/pdf",
                 },
+                body: data.file,
             });
 
-            console.log(response.status);
-            console.log(response.statusText);
-
             if (!response.ok) {
-                console.log(await response.text());
                 throw new Error("Upload failed");
             }
 
-
-            
             await confirmFileUpload(fileId).unwrap();
-
 
             snack.success("Uploaded successfully");
             onClose();

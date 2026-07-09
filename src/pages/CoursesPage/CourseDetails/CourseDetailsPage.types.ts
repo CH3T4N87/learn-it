@@ -10,3 +10,8 @@ export type ModalState = { type: "ADD_ANNOUNCEMENT" } |
 { type: "VIEW_QUESTIONS", sessionId: string } |
     null
 
+
+ export interface SessionState {
+  startingSessionId: string | null,
+  endingSessionId: string | null
+}

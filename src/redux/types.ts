@@ -163,7 +163,21 @@ export type SessionQuestion = {
 export type GetSessionQuestionsResponse = SessionQuestion[];
 
 export interface AssignmentFileRequest {
-  filename: string;
-  contentType: string;
-  size: number;
+    filename: string;
+    contentType: string;
+    size: number;
 }
+
+
+export type GetMyFilesResponse = {
+    "id": string,
+    "uploaderId": string,
+    "kind": "SUBMISSION" | "MATERIAL",
+    "key": string,
+    "filename": string,
+    "contentType": string,
+    "size": number,
+    "status": string,
+    "submissionId": string,
+    "createdAt": string
+}[]

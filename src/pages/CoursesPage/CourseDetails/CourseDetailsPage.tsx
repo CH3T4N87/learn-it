@@ -3,7 +3,7 @@ import { useGetCourseByIdQuery } from "../../../redux/slices/coursesApiSlice";
 import Loader from "../../../components/Loader/Loader";
 import Button from "../../../components/Button/Button";
 import { useState } from "react";
-import type { ModalState } from "./CourseDetailsPage.types";
+import type { ModalState, SessionState } from "./CourseDetailsPage.types";
 import AddAnnouncement from "./components/AddAnnouncement/AddAnnouncement";
 import RoleGuard from "../../../hoc/RoleGuard";
 import { ROLES } from "../../../types/Roles";
@@ -17,10 +17,7 @@ import { snack } from "../../../components/Snackbar/hooks/useSnackbarStore";
 import AddQuestion from "./components/AddQuestion/AddQuestion";
 import QuestionsPage from "./components/QuestionsPage/QuestionsPage";
 
-interface SessionState {
-  startingSessionId: string | null,
-  endingSessionId: string | null
-}
+
 
 const CourseDetailPage = () => {
 
@@ -92,7 +89,7 @@ const CourseDetailPage = () => {
       {modal?.type === "VIEW_SUBMISSIONS" && <Submissions onClose={closeModal} assignmentId={modal.assignmentId} />}
       {modal?.type === "ADD_SESSION" && <AddSession onClose={closeModal} courseId={modal.courseId} />}
       {modal?.type === "ADD_QUESTION" && <AddQuestion onClose={closeModal} sessionId={modal.sessionId} />}
-      {modal?.type === "VIEW_QUESTIONS" && <QuestionsPage onClose={closeModal}sessionId={modal.sessionId} />}
+      {modal?.type === "VIEW_QUESTIONS" && <QuestionsPage onClose={closeModal} sessionId={modal.sessionId} />}
 
       <h1>{course.title}</h1>
 
@@ -155,16 +152,16 @@ const CourseDetailPage = () => {
             </RoleGuard>
 
 
-              <Button
-                variant="primary"
-                onClick={() => setModal({ type: "VIEW_QUESTIONS", sessionId: session.id})}
-              >
+            <Button
+              variant="primary"
+              onClick={() => setModal({ type: "VIEW_QUESTIONS", sessionId: session.id })}
+            >
               View Questions
-              </Button>
+            </Button>
 
-              
+
             <RoleGuard allowed={[ROLES.STUDENT]}>
-                  <Button variant="success" onClick={() => setModal({ type: "ADD_QUESTION", sessionId: session.id })}>Ask Questions</Button>
+              <Button variant="success" onClick={() => setModal({ type: "ADD_QUESTION", sessionId: session.id })}>Ask Questions</Button>
             </RoleGuard>
           </div>
         ))
@@ -188,10 +185,12 @@ const CourseDetailPage = () => {
               Due Date:
               {" " + new Date(assignment.dueAt).toLocaleDateString()}
             </p>
-            <RoleGuard allowed={[ROLES.INSTRUCTOR]}>
+            <RoleGuard allowed={[ROLES.STUDENT]}>
               <Button variant="success"
                 onClick={() => setModal({ type: "ADD_ASSIGNMENT_FILE", assignmentId: assignment.id })}
               >Add Assignment File</Button>
+            </RoleGuard>
+            <RoleGuard allowed={[ROLES.INSTRUCTOR]}>
               <Button variant="secondary"
                 onClick={() => setModal({ type: "VIEW_SUBMISSIONS", assignmentId: assignment.id })}
               >View Submission Files</Button>

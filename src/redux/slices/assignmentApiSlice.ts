@@ -1,7 +1,6 @@
 import type { AssignmentData } from "../../pages/CoursesPage/CourseDetails/components/AddAssignment/AddAssignment.types";
-import type { AssignmentContent } from "../../pages/CoursesPage/CourseDetails/components/AddAssignmentFile/AddAssignmentFile.types";
 import type { GradeData } from "../../pages/CoursesPage/CourseDetails/components/Submissions/AddGrade/AddGrade.types";
-import type { Assignment, AssignmentFileRequest, GetMyGradesResponse, GetSubmissionsResponse, UploadAssignmentFileResponse } from "../types";
+import type { Assignment, AssignmentFileRequest, GetMyFilesResponse, GetMyGradesResponse, GetSubmissionsResponse, UploadAssignmentFileResponse } from "../types";
 import { apiSlice } from "./apiSlice";
 
 const assignmentApiSlice = apiSlice.injectEndpoints({
@@ -57,6 +56,11 @@ const assignmentApiSlice = apiSlice.injectEndpoints({
                 method: "POST"
             })
         }),
+        getMyFiles: builder.query<GetMyFilesResponse, void>({
+            query: () => ({
+                url: "files/me"
+            })
+        })
     })
 })
 
@@ -68,5 +72,6 @@ export const {
     useGetSubmissionsQuery,
     useGradeSubmissionMutation,
     useGetMyGradesQuery,
-    useConfirmFileUploadMutation
+    useConfirmFileUploadMutation,
+    useGetMyFilesQuery
 } = assignmentApiSlice;

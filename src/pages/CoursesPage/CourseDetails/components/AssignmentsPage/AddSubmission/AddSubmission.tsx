@@ -1,34 +1,40 @@
 import { useForm } from "react-hook-form";
 import Modal from "../../../../../../components/Modal/Modal";
 import Form from "../../../../../../components/Form/Form";
-import FormInput from "../../../../../../components/Form/FormInput/FormInput";
 import Button from "../../../../../../components/Button/Button";
-import { useCreateSubmissionMutation } from "../../../../../../redux/slices/assignmentApiSlice";
+import { useCreateSubmissionMutation, useGetMyFilesQuery } from "../../../../../../redux/slices/assignmentApiSlice";
 import type { AddSubmissionProps, SubmissionData } from "./AddSubmission.types";
 import { snack } from "../../../../../../components/Snackbar/hooks/useSnackbarStore";
+import FormSelect from "../../../../../../components/Form/FormSelect/FormSelect";
+import type { Option } from "../../../../../../components/Form/FormSelect/FormSelect.types";
 
 const AddSubmission = ({ assignmentId, onClose }: AddSubmissionProps) => {
+
 
   const defaultValues: SubmissionData = {
     fileIds: ""
   }
   const methods = useForm<SubmissionData>({ defaultValues });
 
-  const [createSubmission, { isLoading }] =
-    useCreateSubmissionMutation();
+  const [createSubmission, { isLoading }] = useCreateSubmissionMutation();
+  const { data: files, isLoading: gettingFiles } = useGetMyFilesQuery();
+
+  const filteredFiles = files?.filter(file => file.kind === "SUBMISSION");
 
   const onSubmit = async (data: SubmissionData) => {
     try {
-      const payload = {
-        fileIds: data.fileIds
-          .split(",")
-          .map((id) => id.trim())
-          .filter(Boolean),
-      };
+      // const payload = {
+      //   fileIds: data.fileIds
+      //     .split(",")
+      //     .map((id) => id.trim())
+      //     .filter(Boolean),
+      // };
+
+      // console.log("Payload: ", payload);
 
       await createSubmission({
         assignmentId,
-        data: payload,
+        data: { fileIds: [data.fileIds] },
       }).unwrap();
 
       snack.success("Submission created successfully");
@@ -45,10 +51,18 @@ const AddSubmission = ({ assignmentId, onClose }: AddSubmissionProps) => {
     <Modal closeModal={onClose}>
       <Form methods={methods} onSubmit={onSubmit}>
 
-        <FormInput<SubmissionData>
+        <FormSelect<SubmissionData>
+          label="Select files"
           name="fileIds"
-          label="File IDs (comma separated)"
-          placeholder="file_123,file_456"
+          defaultOption={gettingFiles ? "Loading files..." : "Select a file"}
+          options={
+            filteredFiles?.map(file => {
+              return {
+                label: file.filename,
+                value: file.id
+              } as Option
+            }) || []
+          }
         />
 
         <Button type="submit" disabled={isLoading}>
