@@ -1,7 +1,7 @@
 import type { AssignmentData } from "../../pages/CoursesPage/CourseDetails/components/AddAssignment/AddAssignment.types";
 import type { AssignmentContent } from "../../pages/CoursesPage/CourseDetails/components/AddAssignmentFile/AddAssignmentFile.types";
 import type { GradeData } from "../../pages/CoursesPage/CourseDetails/components/Submissions/AddGrade/AddGrade.types";
-import type { Assignment, GetMyGradesResponse, GetSubmissionsResponse, UploadAssignmentFileResponse } from "../types";
+import type { Assignment, AssignmentFileRequest, GetMyGradesResponse, GetSubmissionsResponse, UploadAssignmentFileResponse } from "../types";
 import { apiSlice } from "./apiSlice";
 
 const assignmentApiSlice = apiSlice.injectEndpoints({
@@ -19,7 +19,7 @@ const assignmentApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Course"]
         }),
-        uploadAssignmentFile: builder.mutation<UploadAssignmentFileResponse, { assignmentId: string; data: AssignmentContent }>({
+        uploadAssignmentFile: builder.mutation<UploadAssignmentFileResponse, { assignmentId: string; data: AssignmentFileRequest }>({
             query: ({ assignmentId, data }) => ({
                 url: `assignments/${assignmentId}/files`,
                 method: "POST",
@@ -51,7 +51,22 @@ const assignmentApiSlice = apiSlice.injectEndpoints({
                 method: "GET",
             }),
         }),
+        confirmFileUpload: builder.mutation<void, string>({
+            query: (fileId) => ({
+                url: `/files/${fileId}/confirm`,
+                method: "POST"
+            })
+        }),
     })
 })
 
-export const { useGetAssignmentsQuery, useAddAssignmentMutation, useUploadAssignmentFileMutation, useCreateSubmissionMutation, useGetSubmissionsQuery, useGradeSubmissionMutation, useGetMyGradesQuery } = assignmentApiSlice;
+export const {
+    useGetAssignmentsQuery,
+    useAddAssignmentMutation,
+    useUploadAssignmentFileMutation,
+    useCreateSubmissionMutation,
+    useGetSubmissionsQuery,
+    useGradeSubmissionMutation,
+    useGetMyGradesQuery,
+    useConfirmFileUploadMutation
+} = assignmentApiSlice;

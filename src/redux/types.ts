@@ -161,3 +161,9 @@ export type SessionQuestion = {
 };
 
 export type GetSessionQuestionsResponse = SessionQuestion[];
+
+export interface AssignmentFileRequest {
+  filename: string;
+  contentType: string;
+  size: number;
+}

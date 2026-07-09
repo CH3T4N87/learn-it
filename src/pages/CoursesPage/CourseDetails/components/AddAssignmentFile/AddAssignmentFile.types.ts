@@ -7,5 +7,9 @@ export interface AddAssignmentFileProps {
 }
 
 
+export interface AssignmentUploadForm {
+  file?: File;
+}
+
 
 export type AssignmentContent = z.input<typeof ZAddAssignmentFile>

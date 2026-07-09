@@ -1,62 +1,86 @@
 import { useForm } from "react-hook-form";
-import type { AddAssignmentFileProps, AssignmentContent } from "./AddAssignmentFile.types";
-import { useUploadAssignmentFileMutation } from "../../../../../redux/slices/assignmentApiSlice";
+import type { AddAssignmentFileProps, AssignmentContent, AssignmentUploadForm } from "./AddAssignmentFile.types";
+import { useConfirmFileUploadMutation, useUploadAssignmentFileMutation } from "../../../../../redux/slices/assignmentApiSlice";
 import { snack } from "../../../../../components/Snackbar/hooks/useSnackbarStore";
 import Modal from "../../../../../components/Modal/Modal";
 import Form from "../../../../../components/Form/Form";
-import FormInput from "../../../../../components/Form/FormInput/FormInput";
 import Button from "../../../../../components/Button/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ZAddAssignmentFile } from "./AddAssignmentFile.schema";
+import FormFileInput from "../../../../../components/Form/FormFileInput/FormFileInput";
 
 
 const AddAssignmentFile = ({ assignmentId, onClose }: AddAssignmentFileProps) => {
-  const methods = useForm<AssignmentContent>({
-    defaultValues: {
-      filename: "",
-      contentType: "",
-      size: 1,
-    },
-    resolver: zodResolver(ZAddAssignmentFile)
-  });
+    const methods = useForm<AssignmentUploadForm>({
+        defaultValues: {
+            file: undefined
+        },
+    });
 
-  const [uploadAssignmentFile, { isLoading }] = useUploadAssignmentFileMutation();
+    const [uploadAssignmentFile, { isLoading }] = useUploadAssignmentFileMutation();
+    const [confirmFileUpload] = useConfirmFileUploadMutation();
 
-  const onSubmit = async (data: AssignmentContent) => {
-    try {
-      await uploadAssignmentFile({ assignmentId, data: {...data, size: Number(data.size)}}).unwrap();
-      snack.success("Uploaded successfully");
-      onClose();
-    } catch (e: any) {
-      snack.error(e.data.error.message || "something went wrong");
-    }
-  };
+    const onSubmit = async (data: AssignmentUploadForm) => {
+        if (!data.file) {
+            snack.error("Please select a file");
+            return;
+        }
+        try {
 
-  return (
-    <Modal closeModal={onClose}>
-      <Form methods={methods} onSubmit={onSubmit}>
-        <FormInput<AssignmentContent>
-          name="filename"
-          label="Filename"
-        />
+            const { fileId, uploadUrl } = await uploadAssignmentFile(
+                {
+                    assignmentId,
+                    data: {
+                        filename: data.file.name,
+                        contentType: data.file.type,
+                        size: data.file.size
+                    }
+                }).unwrap();
 
-        <FormInput<AssignmentContent>
-          name="contentType"
-          label="Content Type"
-        />
+            console.log(fileId, uploadUrl);
+            
+            const response = await fetch(`https://xhkrpfff-4000.inc1.devtunnels.ms/internal/upload/${fileId}`, {
+                method: "PUT",
+                body: data.file,
+                headers: {
+                    "Content-Type": data.file.type,
+                },
+            });
 
-        <FormInput<AssignmentContent>
-          name="size"
-          label="Size"
-          type="number"
-        />
+            console.log(response.status);
+            console.log(response.statusText);
 
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Uploading..." : "Upload"}
-        </Button>
-      </Form>
-    </Modal>
-  );
+            if (!response.ok) {
+                console.log(await response.text());
+                throw new Error("Upload failed");
+            }
+
+
+            
+            await confirmFileUpload(fileId).unwrap();
+
+
+            snack.success("Uploaded successfully");
+            onClose();
+
+        } catch (e: any) {
+            snack.error(e?.data?.error?.message || "Something went wrong");
+        }
+    };
+
+    return (
+        <Modal closeModal={onClose}>
+            <Form methods={methods} onSubmit={onSubmit}>
+                <FormFileInput<AssignmentContent>
+                    name="file"
+                    label="Upload File"
+                />
+                <Button type="submit" disabled={isLoading}>
+                    {isLoading ? "Uploading..." : "Upload"}
+                </Button>
+            </Form>
+        </Modal>
+    );
 };
 
 export default AddAssignmentFile;
